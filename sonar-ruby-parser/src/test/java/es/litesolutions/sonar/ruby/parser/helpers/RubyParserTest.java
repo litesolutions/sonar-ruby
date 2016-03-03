@@ -4,7 +4,6 @@ import com.github.fge.grappa.Grappa;
 import com.github.fge.grappa.rules.Rule;
 import es.litesolutions.sonar.ruby.parser.LiteralsParser;
 import es.litesolutions.sonar.ruby.parser.RubyParser;
-import es.litesolutions.sonar.ruby.tokens.Elements;
 
 public class RubyParserTest
     extends RubyParser
@@ -17,8 +16,8 @@ public class RubyParserTest
         return literals.stringLiteral();
     }
 
-    public Rule fn()
+    public Rule number()
     {
-        return literals.identifier(Elements.FUNCTION);
+        return literals.number();
     }
 }

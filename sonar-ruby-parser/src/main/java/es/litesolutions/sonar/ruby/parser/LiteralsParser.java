@@ -1,8 +1,6 @@
 package es.litesolutions.sonar.ruby.parser;
 
-import com.github.fge.grappa.annotations.Cached;
 import com.github.fge.grappa.rules.Rule;
-import com.sonar.sslr.api.TokenType;
 import es.litesolutions.sonar.grappa.SonarParserBase;
 import es.litesolutions.sonar.ruby.tokens.Literals;
 
@@ -13,7 +11,7 @@ public class LiteralsParser
     /*
      * STRING
      */
-    Rule doubleQuotedBackslashSequence()
+    Rule backslashNotation()
     {
         return sequence(
             '\\',
@@ -41,7 +39,7 @@ public class LiteralsParser
         return sequence(
             '"',
             join(zeroOrMore(noneOf("\"\\")))
-                .using(doubleQuotedBackslashSequence())
+                .using(backslashNotation())
                 .min(0),
             '"'
         );
@@ -70,22 +68,65 @@ public class LiteralsParser
     }
 
     /*
-     * IDENTIFIERS
+     * NUMBERS
      */
 
-    public Rule identifier()
+    // Note: in fact, this also swallows octals. Meh.
+    Rule regularNumber()
     {
         return sequence(
-            firstOf(alpha(), '_'),
-            join(zeroOrMore(firstOf(alpha(), digit())))
+            join(oneOrMore(digit()))
                 .using('_')
-                .min(0)
+                .min(1),
+            optional(
+                '.',
+                join(oneOrMore(digit()))
+                    .using('_')
+                    .min(1)
+            )
         );
     }
 
-    @Cached
-    public Rule identifier(final TokenType tokenType)
+    Rule hexadecimalNumber()
     {
-        return sequence(identifier(), pushToken(tokenType));
+        return sequence(
+            ignoreCase("0x"),
+            join(oneOrMore(hexDigit()))
+                .using('_')
+                .min(1)
+        );
+    }
+
+    Rule binaryNumber()
+    {
+        return sequence(
+            ignoreCase("0b"),
+            join(oneOrMore(bit()))
+                .using('_')
+                .min(1)
+        );
+    }
+
+    Rule exponent()
+    {
+        return sequence(
+            ignoreCase('e'),
+            optional('-'),
+            regularNumber()
+        );
+    }
+
+    Rule doNumber()
+    {
+        return sequence(
+            zeroOrMore('-'),
+            firstOf(hexadecimalNumber(), binaryNumber(), regularNumber()),
+            optional(exponent())
+        );
+    }
+
+    public Rule number()
+    {
+        return sequence(doNumber(), pushToken(Literals.NUMBER));
     }
 }

@@ -10,6 +10,7 @@ public enum Literals
     implements TokenType
 {
     STRING,
+    NUMBER,
     ;
 
     @Override
