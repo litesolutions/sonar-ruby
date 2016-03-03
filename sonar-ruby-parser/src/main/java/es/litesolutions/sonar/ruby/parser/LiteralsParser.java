@@ -45,8 +45,25 @@ public class LiteralsParser
         );
     }
 
+    Rule singleQuotedString()
+    {
+        return sequence(
+            '\'',
+            join(zeroOrMore(noneOf("'\\")))
+                .using(sequence('\\', anyOf("'\\")))
+                .min(0),
+            '\''
+        );
+    }
+
     public Rule stringLiteral()
     {
-        return sequence(doubleQuotedString(), pushToken(Literals.STRING));
+        return sequence(
+            firstOf(
+                doubleQuotedString(),
+                singleQuotedString()
+            ),
+            pushToken(Literals.STRING)
+        );
     }
 }

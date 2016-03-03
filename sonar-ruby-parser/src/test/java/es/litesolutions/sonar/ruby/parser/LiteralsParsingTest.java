@@ -53,7 +53,31 @@ public final class LiteralsParsingTest
             .build();
         list.add(new Object[] { input, tokens });
 
-        input = "\\C-e";
+        input = "\"\\C-e\"";
+        tokens = TokenList.create()
+            .add(1, 0, Literals.STRING, input)
+            .build();
+        list.add(new Object[] { input, tokens });
+
+        input = "'hello'";
+        tokens = TokenList.create()
+            .add(1, 0, Literals.STRING, input)
+            .build();
+        list.add(new Object[] { input, tokens });
+
+        input = "'\\\''";
+        tokens = TokenList.create()
+            .add(1, 0, Literals.STRING, input)
+            .build();
+        list.add(new Object[] { input, tokens });
+
+        input = "''";
+        tokens = TokenList.create()
+            .add(1, 0, Literals.STRING, input)
+            .build();
+        list.add(new Object[] { input, tokens });
+
+        input = "'This is a backslash: \\\\'";
         tokens = TokenList.create()
             .add(1, 0, Literals.STRING, input)
             .build();
