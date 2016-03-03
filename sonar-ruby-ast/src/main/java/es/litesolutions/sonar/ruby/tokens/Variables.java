@@ -11,6 +11,8 @@ public enum Variables
 {
     LOCAL,
     GLOBAL,
+    INSTANCE,
+    CONSTANT,
     ;
 
     @Override

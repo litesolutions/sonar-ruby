@@ -14,6 +14,7 @@ public enum RubyGrammar
         LiteralsGrammar.injectInto(builder);
         IdentifiersGrammar.injectInto(builder);
 
+        // For now...
         builder.rule(FILE).is(LiteralsGrammar.STRING);
     }
 }
