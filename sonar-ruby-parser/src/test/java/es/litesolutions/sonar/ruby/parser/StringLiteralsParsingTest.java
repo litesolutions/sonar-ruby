@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public final class LiteralsParsingTest
+public final class StringLiteralsParsingTest
     extends ParsingTest
 {
-    public LiteralsParsingTest()
+    public StringLiteralsParsingTest()
     {
         super(LiteralsGrammar.STRING, RubyParserTest::stringLiteral);
     }

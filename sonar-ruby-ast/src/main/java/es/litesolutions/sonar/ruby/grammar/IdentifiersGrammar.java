@@ -1,19 +1,17 @@
 package es.litesolutions.sonar.ruby.grammar;
 
+import es.litesolutions.sonar.ruby.tokens.Elements;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
-public enum RubyGrammar
+public enum IdentifiersGrammar
     implements GrammarRuleKey
 {
-    FILE,
+    FUNCTION,
     ;
 
     public static void injectInto(final LexerfulGrammarBuilder builder)
     {
-        LiteralsGrammar.injectInto(builder);
-        IdentifiersGrammar.injectInto(builder);
-
-        builder.rule(FILE).is(LiteralsGrammar.STRING);
+        builder.rule(FUNCTION).is(Elements.FUNCTION);
     }
 }

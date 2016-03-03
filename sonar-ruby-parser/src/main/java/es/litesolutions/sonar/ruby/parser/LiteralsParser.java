@@ -1,6 +1,8 @@
 package es.litesolutions.sonar.ruby.parser;
 
+import com.github.fge.grappa.annotations.Cached;
 import com.github.fge.grappa.rules.Rule;
+import com.sonar.sslr.api.TokenType;
 import es.litesolutions.sonar.grappa.SonarParserBase;
 import es.litesolutions.sonar.ruby.tokens.Literals;
 
@@ -65,5 +67,25 @@ public class LiteralsParser
             ),
             pushToken(Literals.STRING)
         );
+    }
+
+    /*
+     * IDENTIFIERS
+     */
+
+    public Rule identifier()
+    {
+        return sequence(
+            firstOf(alpha(), '_'),
+            join(zeroOrMore(firstOf(alpha(), digit())))
+                .using('_')
+                .min(0)
+        );
+    }
+
+    @Cached
+    public Rule identifier(final TokenType tokenType)
+    {
+        return sequence(identifier(), pushToken(tokenType));
     }
 }
