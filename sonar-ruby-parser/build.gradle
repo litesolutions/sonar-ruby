@@ -1,0 +1,5 @@
+dependencies {
+    compile project(":sonar-ruby-ast");
+    compile(group: "es.litesolutions", name:  "sonar-sslr-grappa",
+        version: "0.5.0");
+}

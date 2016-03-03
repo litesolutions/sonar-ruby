@@ -1,0 +1,6 @@
+dependencies {
+    compile(group: "org.codehaus.sonar", name: "sonar-plugin-api",
+            version: "5.1");
+    compile(group: "org.codehaus.sonar.sslr-squid-bridge",
+            name: "sslr-squid-bridge", version: "2.6");
+}

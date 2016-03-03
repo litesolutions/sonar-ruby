@@ -1,0 +1,78 @@
+repositories {
+    mavenCentral();
+}
+
+group = "es.litesolutions";
+version = "1.0.0-SNAPSHOT";
+
+apply(plugin: "sonar-runner");
+
+sonarRunner {
+    toolVersion = "2.4";
+    // Uncomment and adapt the code below if you are not using the defaults.
+    // See http://gradle.org/docs/current/userguide/sonar_runner_plugin.html
+    sonarProperties {
+//        property("sonar.host.url", "http://my.sonar.server/somewhere");
+        property("sonar.jdbc.url", "jdbc:postgresql://localhost/sonardb");
+//        property("sonar.jdbc.driverClassName", "the.sql.DriverClass");
+        property("sonar.jdbc.username", "sonar");
+        property("sonar.jdbc.password", "sonar");
+    }
+}
+
+subprojects {
+    repositories {
+        mavenCentral();
+    }
+
+    // Why do I have to specify it again here?
+    version = "1.0.0-SNAPSHOT";
+
+    apply(plugin: "java");
+    apply(plugin: "maven");
+    apply(plugin: "signing");
+    apply(plugin: "idea");
+    apply(plugin: "eclipse");
+
+    def javaVersion = JavaVersion.VERSION_1_8;
+    sourceCompatibility = javaVersion;
+    targetCompatibility = javaVersion; // defaults to sourceCompatibility
+
+    dependencies {
+        testCompile(group: "org.testng", name: "testng", version: "6.9.10") {
+            exclude(group: "org.apache.ant", module: "ant");
+            exclude(group: "com.google.inject", module: "guice");
+            exclude(group: "junit", module: "junit");
+            exclude(group: "org.beanshell", module: "bsh");
+            exclude(group: "org.yaml", module: "snakeyaml");
+        };
+        testCompile(group: "org.mockito", name: "mockito-core",
+            version: "1.10.19");
+        testCompile(group: "org.assertj", name: "assertj-core",
+            version: "3.3.0");
+    }
+
+    task enforceVersion << {
+        def foundVersion = JavaVersion.current();
+        if (foundVersion != javaVersion)
+            throw new IllegalStateException("Wrong java version; required is " +
+                javaVersion + ", but found " + foundVersion);
+    }
+
+    compileJava.dependsOn(enforceVersion);
+
+    /*
+     * Necessary! Otherwise TestNG will not be used...
+     */
+    test {
+        useTestNG() {
+            useDefaultListeners = true;
+        };
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "2.11";
+    distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip";
+}
