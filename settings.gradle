@@ -1,2 +1,3 @@
 include "sonar-ruby-ast";
 include "sonar-ruby-parser";
+include "sonar-ruby-sslr-toolkit";
