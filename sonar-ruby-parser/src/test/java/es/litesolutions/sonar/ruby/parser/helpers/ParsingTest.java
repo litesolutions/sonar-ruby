@@ -33,7 +33,7 @@ public abstract class ParsingTest
         final Function<RubyParserTest, Rule> ruleFunction)
     {
         parser = GrappaSslrFactory.withParserClass(RubyParserTest.class)
-            .withGrammarClass(RubyGrammar.class)
+            .withGrammarInjector(RubyGrammar::injectInto)
             .withEntryPoint(key)
             .withMainRule(ruleFunction)
             .build()
