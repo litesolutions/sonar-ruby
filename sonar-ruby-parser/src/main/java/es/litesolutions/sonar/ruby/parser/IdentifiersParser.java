@@ -1,6 +1,8 @@
 package es.litesolutions.sonar.ruby.parser;
 
+import com.github.fge.grappa.annotations.Cached;
 import com.github.fge.grappa.rules.Rule;
+import com.sonar.sslr.api.TokenType;
 import es.litesolutions.sonar.grappa.SonarParserBase;
 import es.litesolutions.sonar.ruby.tokens.Variables;
 
@@ -13,7 +15,7 @@ public class IdentifiersParser
             .using('_')
             .min(0);
     }
-    Rule doLocalVar()
+    Rule regularIdentifier()
     {
         return sequence(
             firstOf(charRange('a', 'z'), '_'),
@@ -21,9 +23,15 @@ public class IdentifiersParser
         );
     }
 
+    @Cached
+    public Rule regular(final TokenType type)
+    {
+        return sequence(regularIdentifier(), pushToken(type));
+    }
+
     public Rule localVar()
     {
-        return sequence(doLocalVar(), pushToken(Variables.LOCAL));
+        return regular(Variables.LOCAL);
     }
 
     Rule doConstant()
@@ -52,7 +60,7 @@ public class IdentifiersParser
 
     Rule doInstanceVar()
     {
-        return sequence('@', doLocalVar());
+        return sequence('@', regularIdentifier());
     }
 
     public Rule instanceVar()
