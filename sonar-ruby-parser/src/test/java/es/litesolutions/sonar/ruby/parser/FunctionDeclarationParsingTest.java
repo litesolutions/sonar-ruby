@@ -44,6 +44,15 @@ public final class FunctionDeclarationParsingTest
             .build();
         list.add(new Object[] { input, tokens });
 
+        input = "def   fooo ( bar, baz )";
+        tokens = TokenList.create()
+            .add(1, 0, Keywords.DEF, "def")
+            .add(1, 6, Elements.FUNCTION, "fooo")
+            .add(1, 13, Elements.ARGUMENT, "bar")
+            .add(1, 18, Elements.ARGUMENT, "baz")
+            .build();
+        list.add(new Object[] { input, tokens });
+
         return list.iterator();
     }
 }
