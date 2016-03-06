@@ -10,7 +10,6 @@ public enum References
     implements TokenType
 {
     FUNCTION,
-    ARGUMENT,
     ;
 
     @Override

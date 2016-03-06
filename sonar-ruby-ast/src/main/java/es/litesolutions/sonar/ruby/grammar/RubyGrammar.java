@@ -13,6 +13,7 @@ public enum RubyGrammar
     {
         LiteralsGrammar.injectInto(builder);
         IdentifiersGrammar.injectInto(builder);
+        OperandGrammar.injectInto(builder);
         FunctionGrammar.injectInto(builder);
 
         // For now...

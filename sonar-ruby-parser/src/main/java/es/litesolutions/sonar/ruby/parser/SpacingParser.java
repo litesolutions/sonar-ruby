@@ -1,5 +1,6 @@
 package es.litesolutions.sonar.ruby.parser;
 
+import com.github.fge.grappa.annotations.Cached;
 import com.github.fge.grappa.rules.Rule;
 import es.litesolutions.sonar.grappa.SonarParserBase;
 
@@ -16,6 +17,7 @@ public class SpacingParser
         return sequence(optional(cr()), lf());
     }
 
+    @Cached
     public Rule spaces(final char separator)
     {
         return sequence(
